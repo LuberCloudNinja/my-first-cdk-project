@@ -1,2 +1,4 @@
 1- Anytime you need to work with new services dont forget to add it to the "requirements.txt" file and then run the below command:
 "pip3 install -r requirements.txt
+
+2- Remember to activate the virtual environment with the fallowing command "source .env/bin/activate"
