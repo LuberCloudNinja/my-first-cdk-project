@@ -14,5 +14,6 @@ class MyFirstCdkProjectStack(cdk.Stack):
             "myBucketId",
             bucket_name="my-first-cdk-project-luber",
             versioned=True,
-            encryption=_s3.BucketEncryption.KMS_MANAGED
+            encryption=_s3.BucketEncryption.S3_MANAGED,
+            block_public_access=_s3.BlockPublicAccess.BLOCK_ALL
         )
