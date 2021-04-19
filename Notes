@@ -3,3 +3,7 @@
 "pip3 install aws-cdk.aws-iam".
 
 2- Remember to activate the virtual environment with the fallowing command "source .env/bin/activate"
+
+3- To remove metadata from the templates go to the root of this directory in the cdk.json file add variable:
+
+"versionReporting" : false
