@@ -36,7 +36,7 @@ class MyFirstCdkProjectStack(cdk.Stack):
         if not cdk.Token.is_unresolved(snstopicname) and len(snstopicname) > 10:
             raise ValueError("Maximum value can be only 10 characters")
 
-        print(my_bucket.bucket_name)
+        # print(my_bucket.bucket_name)
 
         # Create an IAM group:
 
