@@ -1,5 +1,6 @@
 from aws_cdk import (
     aws_ec2 as _ec2,
+    aws_s3 as _s3,
     core as cdk
 )
 
@@ -38,8 +39,17 @@ class CustomVpcStack(cdk.Stack):
 
         )
 
+        "Adding  tags to the vpc resources: "
+        cdk.Tags.of(custom_vpc).add("Owner", "Luber")
+
         """ Export this VPC by creating an output object: """
         cdk.CfnOutput(self,
                       "customVpcOutput",
                       value=custom_vpc.vpc_id,
                       export_name="customVpcId")
+
+        """ Creating S3 Bucket: """
+        my_bkt = _s3.Bucket(self, "CustomBktId")
+
+        "Adding tags to S3: "
+        cdk.Tags.of(my_bkt).add("Owner", "Luber")
