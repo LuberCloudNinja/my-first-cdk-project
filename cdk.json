@@ -1,6 +1,6 @@
 {
   "app": "python3 app.py",
-  "versionReporting" : false,
+  "versionReporting": false,
   "context": {
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
     "@aws-cdk/core:enableStackNameDuplicates": "true",
@@ -12,6 +12,33 @@
     "@aws-cdk/aws-s3:grantWriteWithoutAcl": true,
     "@aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount": true,
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
-    "@aws-cdk/aws-efs:defaultEncryptionAtRest": true
+    "@aws-cdk/aws-efs:defaultEncryptionAtRest": true,
+    "Dev": {
+      "regions": {
+        "east": "us-east-1",
+        "west": "us-west-1"
+      },
+      "account":"477781550577"
+  },
+    "Prod": {
+      "regions": {
+        "east": "us-east-1",
+        "west": "us-west-1"
+      },
+      "account":"080013860795",
+      "encryption": true,
+      "vpc_cidr": "10.84.0.0/16"
+    },
+    "Master": {
+      "regions": {
+        "east": "us-east-1",
+        "west": "us-west-1"
+      },
+      "account": "721918345279",
+      "encryption": true,
+      "kms_arn": "arn:aws:kms:us-east-1:721918345279:key/723f3ca8-0682-43e4-848b-f54daa5432e0",
+      "vpc_cidr": "10.74.0.0/16"
+    }
   }
 }
+

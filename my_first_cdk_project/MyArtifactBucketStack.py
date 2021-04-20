@@ -1,6 +1,7 @@
 from aws_cdk import (
     aws_s3 as _s3,
     aws_iam as _iam,
+    aws_kms as _kms,
     core as cdk
 )
 
@@ -11,12 +12,17 @@ class MyArtifactBucketStack(cdk.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # Create S3 buckets with different properties depending on the environment.
+
+        mykey = _kms.Key.from_key_arn(self,
+                                      "myKeyId",
+                                      self.node.try_get_context('Master')["kms_arn"])
         if is_prod:
             artifactBucket = _s3.Bucket(self,
-                                        "myProdArtifactBucketId",
-                                        bucket_name="my-prod-artifact-bucket-luber",
+                                        "myMasterArtifactBucketId",
+                                        bucket_name="my-master-artifact-bucket-luber",
                                         versioned=True,
-                                        encryption=_s3.BucketEncryption.S3_MANAGED,
+                                        encryption=_s3.BucketEncryption.KMS,
+                                        encryption_key=mykey,
                                         removal_policy=cdk.RemovalPolicy.RETAIN)
         else:
             artifactBucket = _s3.Bucket(self,
