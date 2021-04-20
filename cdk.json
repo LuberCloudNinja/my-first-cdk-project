@@ -37,7 +37,11 @@
       "account": "721918345279",
       "encryption": true,
       "kms_arn": "arn:aws:kms:us-east-1:721918345279:key/723f3ca8-0682-43e4-848b-f54daa5432e0",
-      "vpc_cidr": "10.74.0.0/16"
+      "vpc_configs": {
+        "vpc_cidr": "10.83.0.0/20",
+        "cidr_mask": 24,
+        "set_reserve": false
+      }
     }
   }
 }

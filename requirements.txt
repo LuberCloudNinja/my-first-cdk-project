@@ -1,3 +1,4 @@
 -e .
 aws-cdk.aws_s3
+aws-cdk.aws_ec2
 
