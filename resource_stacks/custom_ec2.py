@@ -1,5 +1,7 @@
 from aws_cdk import (
     aws_ec2 as _ec2,
+    aws_ssm as _ssm,
+    aws_iam as _iam,
     core as cdk
 )
 
@@ -37,6 +39,16 @@ class CustomEc2Stack(cdk.Stack):
                                    key_name="A4L",
                                    user_data=_ec2.UserData.custom(user_data)
                                    )
+
+        """ Add permission to web server instance profile: """
+        # Allow the instance profile to call SSM:
+        web_server.role.add_managed_policy(
+            _iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore")
+        )
+        # Allow the instance profile to have ReadOnly access to S3:
+        web_server.role.add_managed_policy(
+            _iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3ReadOnlyAccess")
+        )
 
         """ Allow Web Traffic to WebServer: """
         web_server.connections.allow_from_any_ipv4(
