@@ -14,6 +14,7 @@ from aws_cdk import core
 from my_first_cdk_project.MyArtifactBucketStack import MyArtifactBucketStack
 from my_first_cdk_project.my_first_cdk_project_stack import MyFirstCdkProjectStack
 from resource_stacks.custom_vpc import CustomVpcStack
+from resource_stacks.custom_ec2 import CustomEc2Stack
 
 """ Environment Variables below: """
 app = core.App()
@@ -55,6 +56,7 @@ MyFirstCdkProjectStack(app, "MyFirstCdkProjectStack")
 MyArtifactBucketStack(app, "MyDevStack", env=env_US_WEST_Master)
 MyArtifactBucketStack(app, "MyMasterStack", is_prod=True, env=env_US_EAST_Master)
 CustomVpcStack(app, "MyCustomVpc", env=env_US_EAST_Master)
+CustomEc2Stack(app, "My-Web-Server-Stack",env=env_US_EAST_Master)
 
 """ Tagging the stacks: Global tagging, meaning all resources in the stack will have the same tags """
 

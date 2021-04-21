@@ -10,8 +10,7 @@ class CustomVpcStack(cdk.Stack):
     def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # Create a VPC:
-
+        """ Get environment variables from cdk.json: """
         prod_configs = self.node.try_get_context("envs")["Master"]
 
         "Create Custom VPC: "
