@@ -12,7 +12,7 @@ class CustomVpcStack(cdk.Stack):
 
         # Create a VPC:
 
-        prod_configs = self.node.try_get_context("Master")
+        prod_configs = self.node.try_get_context("envs")["Master"]
 
         "Create Custom VPC: "
         custom_vpc = _ec2.Vpc(

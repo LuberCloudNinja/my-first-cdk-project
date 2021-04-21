@@ -15,7 +15,7 @@ class MyArtifactBucketStack(cdk.Stack):
 
         mykey = _kms.Key.from_key_arn(self,
                                       "myKeyId",
-                                      self.node.try_get_context('Master')["kms_arn"])
+                                      self.node.try_get_context("envs")["Master"]["kms_arn"])
         if is_prod:
             artifactBucket = _s3.Bucket(self,
                                         "myMasterArtifactBucketId",
