@@ -79,9 +79,9 @@ class CustomVpcStack(cdk.Stack):
                       "ImportedVPC_2",
                       value=vpc_2.vpc_id)
 
-        """ Peering VPCs: """
-        peer_vpc = _ec2.CfnVPCPeeringConnection(self,
-                                                "peerVpc",
-                                                peer_vpc_id=custom_vpc.vpc_id,
-                                                vpc_id=vpc_2.vpc_id
-                                                )
+        # """ Peering VPCs: """
+        # peer_vpc = _ec2.CfnVPCPeeringConnection(self,
+        #                                         "peerVpc",
+        #                                         peer_vpc_id=custom_vpc.vpc_id,
+        #                                         vpc_id=vpc_2.vpc_id
+        #                                         )
