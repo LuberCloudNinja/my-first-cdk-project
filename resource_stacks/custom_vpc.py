@@ -61,6 +61,20 @@ class CustomVpcStack(cdk.Stack):
             "luber-emr-cluster"
         )
 
+        """ Importing S3 bucket from a different account"""
+        bkt_2 = _s3.Bucket.from_bucket_arn(
+            self,
+            "CrossAccountBucket",
+            "arn:aws:s3:::luberhayproduction")
+
         cdk.CfnOutput(self,
                       "myImportedBucket",
                       value=bkt_1.bucket_name)
+
+        """ Importing default VCP: """
+        vpc_2 = _ec2.Vpc.from_lookup(self,
+                                     "ImportedVPC",
+                                     vpc_id="vpc-0b8f4202bd52ea0d1")
+        cdk.CfnOutput(self,
+                      "ImportedVPC_2",
+                      value=vpc_2.vpc_id)
