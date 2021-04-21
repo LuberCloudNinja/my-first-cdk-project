@@ -53,3 +53,14 @@ class CustomVpcStack(cdk.Stack):
 
         "Adding tags to S3: "
         cdk.Tags.of(my_bkt).add("Owner", "Luber")
+
+        """ Resource in same account: """
+        bkt_1 = _s3.Bucket.from_bucket_name(
+            self,
+            "MyImportedBucket",
+            "luber-emr-cluster"
+        )
+
+        cdk.CfnOutput(self,
+                      "myImportedBucket",
+                      value=bkt_1.bucket_name)
