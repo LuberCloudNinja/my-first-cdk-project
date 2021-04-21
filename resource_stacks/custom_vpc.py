@@ -18,8 +18,8 @@ class CustomVpcStack(cdk.Stack):
             self,
             "customVpcId",
             cidr=prod_configs["vpc_configs"]["vpc_cidr"],
-            max_azs=3,
-            nat_gateways=3,
+            max_azs=2,
+            nat_gateways=2,
             subnet_configuration=[
                 _ec2.SubnetConfiguration(
                     name="PublicSubnet", cidr_mask=prod_configs["vpc_configs"]["cidr_mask"],

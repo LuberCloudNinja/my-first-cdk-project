@@ -17,6 +17,10 @@ class CustomEc2Stack(cdk.Stack):
                                    "ImportVPC",
                                    vpc_id="vpc-0b8f4202bd52ea0d1")
 
+        """ Read BootStrap Script: """
+        with open("bootstrap_script/install_httpd.sh", mode="r") as file:
+            user_data = file.read()
+
         """ Creating Ec2 Instance: """
         web_server = _ec2.Instance(self,
                                    "WebServerId",
@@ -30,7 +34,23 @@ class CustomEc2Stack(cdk.Stack):
                                        subnet_type=_ec2.SubnetType.PUBLIC
                                    ),
                                    availability_zone="us-east-1a",
-                                   key_name="A4L")
+                                   key_name="A4L",
+                                   user_data=_ec2.UserData.custom(user_data)
+                                   )
+
+        """ Allow Web Traffic to WebServer: """
+        web_server.connections.allow_from_any_ipv4(
+            _ec2.Port.tcp(80),
+            description="Allow Web Traffic"
+        )
 
         "Adding  tags to the Instance/s: "
         cdk.Tags.of(web_server).add("Owner", "Luber")
+
+        """ Create an output field to show IP address of the web server: """
+        output_1 = cdk.CfnOutput(
+            self,
+            "WebServer00IP",
+            description="WebServer Public IP Address",
+            value=f"http://{web_server.instance_public_ip}"
+        )
