@@ -55,5 +55,9 @@
         ]
       }
     ]
-  }
+  },
+  "availability-zones:account=721918345279:region=us-west-1": [
+    "us-west-1a",
+    "us-west-1b"
+  ]
 }

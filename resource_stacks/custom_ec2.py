@@ -23,14 +23,27 @@ class CustomEc2Stack(cdk.Stack):
         with open("bootstrap_script/install_httpd.sh", mode="r") as file:
             user_data = file.read()
 
+        """ Get the latest AMI from any region: """
+        # Amazon Linux AMI:
+        amazon_linux_ami = _ec2.MachineImage.latest_amazon_linux(
+            generation=_ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
+            edition=_ec2.AmazonLinuxEdition.STANDARD,
+            storage=_ec2.AmazonLinuxStorage.EBS,
+            virtualization=_ec2.AmazonLinuxVirt.HVM
+        )
+        # Windows AMI:
+        windows_ami = _ec2.MachineImage.latest_windows(
+            version=_ec2.WindowsVersion.WINDOWS_SERVER_2016_ENGLISH_P3
+        )
         """ Creating Ec2 Instance: """
         web_server = _ec2.Instance(self,
                                    "WebServerId",
                                    instance_type=_ec2.InstanceType(instance_type_identifier="t2.micro"),
                                    instance_name="WebServer001",
-                                   machine_image=_ec2.MachineImage.generic_linux(
-                                       {prod_configs["regions"]["east"]: "ami-0742b4e673072066f"}
-                                   ),
+                                   # machine_image=_ec2.MachineImage.generic_linux(
+                                   #     {prod_configs["regions"]["east"]: "ami-0742b4e673072066f"}
+                                   # ),
+                                   machine_image=amazon_linux_ami,
                                    vpc=vpc,
                                    vpc_subnets=_ec2.SubnetSelection(
                                        subnet_type=_ec2.SubnetType.PUBLIC
