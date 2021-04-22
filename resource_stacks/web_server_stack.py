@@ -86,7 +86,7 @@ class WebServerStack(cdk.Stack):
         """ Output of the ALB DOmain Name: """
         output_alb_1 = cdk.CfnOutput(self,
                                      "AlbDomainName",
-                                     value=f"http://{alb.load_balancer_name}",
+                                     value=f"http://{alb.load_balancer_dns_name}",
                                      description="Web Server ALB Domain Name")
 
         """ Tags: """
