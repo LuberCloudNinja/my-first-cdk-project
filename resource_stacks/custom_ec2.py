@@ -53,6 +53,21 @@ class CustomEc2Stack(cdk.Stack):
                                    user_data=_ec2.UserData.custom(user_data)
                                    )
 
+        """ Add EBS with provisioned IOPS: """
+        web_server.instance.add_property_override(
+            "BlockDeviceMappings", [
+                {
+                    "DeviceName": "/dev/sdb",
+                    "Ebs": {
+                        "VolumeSize": "8",
+                        "VolumeType": "io1",
+                        "Iops": "400",
+                        "DeleteOnTermination": "true"
+                    }
+                }
+            ]
+        )
+
         """ Add permission to web server instance profile: """
         # Allow the instance profile to call SSM:
         web_server.role.add_managed_policy(
