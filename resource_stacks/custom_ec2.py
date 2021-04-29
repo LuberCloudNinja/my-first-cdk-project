@@ -85,7 +85,6 @@ class CustomEc2Stack(cdk.Stack):
         )
 
         "Adding  tags to the Instance/s: "
-        cdk.Tags.of(web_server).add("Owner", "Luber")
 
         """ Create an output field to show IP address of the web server: """
         output_1 = cdk.CfnOutput(

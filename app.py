@@ -17,6 +17,7 @@ from resource_stacks.custom_vpc import CustomVpcStack
 from resource_stacks.custom_ec2 import CustomEc2Stack
 from resource_stacks.web_server_stack import WebServerStack
 from resource_stacks.vpc_stack import VpcStack
+from resource_stacks.custom_parameters_secrets import CustomParametersSecretsStack
 
 """ Environment Variables below: """
 app = core.App()
@@ -59,12 +60,13 @@ MyArtifactBucketStack(app, "MyDevStack", env=env_US_WEST_Master)
 MyArtifactBucketStack(app, "MyMasterStack", is_prod=True, env=env_US_EAST_Master)
 CustomVpcStack(app, "MyCustomVpc", env=env_US_EAST_Master)
 CustomEc2Stack(app, "My-Web-Server-Stack",env=env_US_EAST_Master)
-# WebServerStack(app, "Web-Server-ASG-ALB-stack", env=env_US_EAST_Master)
 
 # Application Stack ASG and ALB
 vpc_stack = VpcStack(app, "multi-tier-app-vpc-stack", env=env_US_EAST_Master)
 ec2_stack = WebServerStack(app, "multi-tier-app-web-server-stack", vpc=vpc_stack.vpc, env=env_US_EAST_Master)
 
+# SSM and Secrets Manager Stack:
+ssm_and_secrets_manager_stack = CustomParametersSecretsStack(app, "Custom-Parameters-Secrets-Stack",env=env_US_EAST_Master)
 
 """ Tagging the stacks: Global tagging, meaning all resources in the stack will have the same tags """
 
@@ -75,7 +77,7 @@ ec2_stack = WebServerStack(app, "multi-tier-app-web-server-stack", vpc=vpc_stack
 # cdk.Tags.of().add(key="stack-team-support-email", value=dev_account_tags)
 
 # Master Account Tagging:
-cdk.Tags.of(app).add(key="stack-team-support-email", value=master_account_tags)
+
 
 
 app.synth()

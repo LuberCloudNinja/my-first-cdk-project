@@ -39,7 +39,6 @@ class CustomVpcStack(cdk.Stack):
         )
 
         "Adding  tags to the vpc resources: "
-        cdk.Tags.of(custom_vpc).add("Owner", "Luber")
 
         """ Export this VPC by creating an output object: """
         cdk.CfnOutput(self,
@@ -51,7 +50,6 @@ class CustomVpcStack(cdk.Stack):
         my_bkt = _s3.Bucket(self, "CustomBktId")
 
         "Adding tags to S3: "
-        cdk.Tags.of(my_bkt).add("Owner", "Luber")
 
         """ Resource in same account: """
         bkt_1 = _s3.Bucket.from_bucket_name(

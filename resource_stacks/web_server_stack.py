@@ -90,5 +90,4 @@ class WebServerStack(cdk.Stack):
                                      description="Web Server ALB Domain Name")
 
         """ Tags: """
-        cdk.Tags.of(alb).add("Owner", "Luber")
-        cdk.Tags.of(web_server_role).add("Owner", "Luber")
+
