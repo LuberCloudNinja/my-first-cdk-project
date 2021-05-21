@@ -7,14 +7,14 @@ from aws_cdk import (
 )
 
 
-class WebServerStack(cdk.Stack):
+class WebServer3TierStack(cdk.Stack):
 
     def __init__(self, scope: cdk.Construct, construct_id: str, vpc, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         """ Read UserData Script: """
         try:
-            with open("bootstrap_script/install_httpd.sh", mode="r") as file:
+            with open("app_db_stack/user_data/deploy_app.sh", mode="r") as file:
                 user_data = file.read()
         except OSError:
             print("Unable to read UserData script")
@@ -59,35 +59,34 @@ class WebServerStack(cdk.Stack):
                                     ])
 
         """ Create ASG with 2 EC2 instances: """
-        web_server_asg = _autoscaling.AutoScalingGroup(self,
-                                                       "WebServerAsgId",
-                                                       vpc=vpc,
-                                                       key_name="A4L",
-                                                       vpc_subnets=_ec2.SubnetSelection(
-                                                           subnet_type=_ec2.SubnetType.PRIVATE
-                                                       ),
-                                                       instance_type=_ec2.InstanceType(
-                                                           instance_type_identifier="t2.micro",
-                                                       ),
-                                                       machine_image=linux_ami,
-                                                       role=web_server_role,
-                                                       min_capacity=1,
-                                                       max_capacity=4,
-                                                       desired_capacity=2,
-                                                       user_data=_ec2.UserData.custom(user_data)
-                                                       )
+        self.web_server_asg = _autoscaling.AutoScalingGroup(self,
+                                                            "WebServerAsgId",
+                                                            vpc=vpc,
+                                                            key_name="A4L",
+                                                            vpc_subnets=_ec2.SubnetSelection(
+                                                                subnet_type=_ec2.SubnetType.PRIVATE
+                                                            ),
+                                                            instance_type=_ec2.InstanceType(
+                                                                instance_type_identifier="t2.micro",
+                                                            ),
+                                                            machine_image=linux_ami,
+                                                            role=web_server_role,
+                                                            min_capacity=1,
+                                                            max_capacity=3,
+                                                            desired_capacity=3,
+                                                            user_data=_ec2.UserData.custom(user_data)
+                                                            )
         # Allow ASG SG to receive traffic from ALB SG:
-        web_server_asg.connections.allow_from(alb, _ec2.Port.tcp(80),
-                                              description="Allow ASG SG to receive traffic from ALB SG")
+        self.web_server_asg.connections.allow_from(alb, _ec2.Port.tcp(80),
+                                                   description="Allow ASG SG to receive traffic from ALB SG")
 
         # Add ASG Instances to the ALB Target Group:
-        listener.add_targets("ListenerId", port=80, targets=[web_server_asg])
+        listener.add_targets("ListenerId", port=80, targets=[self.web_server_asg])
 
-        """ Output of the ALB DOmain Name: """
+        """ Output of the ALB Domain Name: """
         output_alb_1 = cdk.CfnOutput(self,
                                      "AlbDomainName",
                                      value=f"http://{alb.load_balancer_dns_name}",
                                      description="Web Server ALB Domain Name")
 
         """ Tags: """
-
